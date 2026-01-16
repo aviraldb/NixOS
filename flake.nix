@@ -8,23 +8,45 @@
         home-manager.inputs.nixpkgs.follow = "nixpkgs";
     };
 
-    outputs = { self, nixpkgs, home-manager, ... } : 
-        let 
-        system = "x86_64-linux";
-    user = "aviral";
-    in {
-        nixosConfigurations.nixlord = nixpkgs.lib.nixosSystem {
-            inherit system;
-            module = [
-                ./hosts/laptop/configuration.nix
+    outputs = { self, nixpkgs, home-manager, ... } @ inputs : 
+        let { 
+            system = "x86_64-linux";
+            user = "aviral";
+            pkgs = import nixpkgs {
+                inherit system;
+                config.allowUnfree = true;
+            };
+        } in {
+            nixosConfigurations {
 
-                    home-manager.nixosModules.home-manager {
-                        home-manager.useGlobalPkgs = true;
-                        home-manager.useUserPackages = true;
-                        home-manager.users.user = import ./hosts/laptop/home.nix;
-                        home-manager.backupFileExtension = "backup";
-                    };
-            ];
-        }
+                laptop = nixpkgs.lib.nixosSystem {
+                    specialArgs = { inherit system inputs; };
+                    module = [
+                        ./hosts/laptop/configuration.nix
+                    ];
+                };
+
+                server = nixpkgs.lib.nixosSystem {
+                    specialArgs = { inherit system inputs; };
+                    module = [
+                        ./hosts/server/configuration.nix
+                    ];
+                };
+
+                pc = nixpkgs.lib.nixosSystem {
+                    specialArgs = { inherit system inputs; };
+                    module = [
+                        ./hosts/pc/configuration.nix
+                    ];
+                };
+
+                raspberry = nixpkgs.lib.nixosSystem {
+                    specialArgs = { inherit system inputs; };
+                    module = [
+                        ./hosts/raspberry/configuration.nix
+                    ];
+                };
+
+            };
     };
 }
