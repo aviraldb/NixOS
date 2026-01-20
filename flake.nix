@@ -20,28 +20,28 @@
             nixosConfigurations {
 
                 laptop = nixpkgs.lib.nixosSystem {
-                    specialArgs = { inherit system inputs; };
+                    specialArgs = { inherit user system inputs; };
                     module = [
                         ./hosts/laptop/configuration.nix
                     ];
                 };
 
                 server = nixpkgs.lib.nixosSystem {
-                    specialArgs = { inherit system inputs; };
+                    specialArgs = { inherit user system inputs; };
                     module = [
                         ./hosts/server/configuration.nix
                     ];
                 };
 
-                pc = nixpkgs.lib.nixosSystem {
-                    specialArgs = { inherit system inputs; };
+                desktop = nixpkgs.lib.nixosSystem {
+                    specialArgs = { inherit user system inputs; };
                     module = [
-                        ./hosts/pc/configuration.nix
+                        ./hosts/desktop/configuration.nix
                     ];
                 };
 
                 raspberry = nixpkgs.lib.nixosSystem {
-                    specialArgs = { inherit system inputs; };
+                    specialArgs = { inherit user system inputs; };
                     module = [
                         ./hosts/raspberry/configuration.nix
                     ];
