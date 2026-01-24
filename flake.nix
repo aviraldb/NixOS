@@ -1,10 +1,9 @@
-
 {
   description = "NixOS Config from Scratch";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -22,12 +21,12 @@
     in
     {
       nixosConfigurations = {
-        
+
         laptop = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit user system inputs pkgs; };
           modules = [
-            ./hosts/laptop/configuration.nix
-            
+            ./Hosts/laptop/configuration.nix
+
             # Integrate Home Manager
             home-manager.nixosModules.home-manager
             {
@@ -42,8 +41,8 @@
         server = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit user system inputs pkgs; };
           modules = [
-            ./hosts/server/configuration.nix
-            
+            ./Hosts/server/configuration.nix
+
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
@@ -57,8 +56,8 @@
         desktop = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit user system inputs pkgs; };
           modules = [
-            ./hosts/desktop/configuration.nix
-            
+            ./Hosts/desktop/configuration.nix
+
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
@@ -71,11 +70,11 @@
 
         raspberry = nixpkgs.lib.nixosSystem {
           # Raspberry Pi is usually ARM, not x86_64
-          system = "aarch64-linux";  # or "armv7l-linux" depending on model
+          system = "aarch64-linux"; # or "armv7l-linux" depending on model
           specialArgs = { inherit user inputs; };
           modules = [
-            ./hosts/raspberry/configuration.nix
-            
+            ./Hosts/raspberry/configuration.nix
+
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
